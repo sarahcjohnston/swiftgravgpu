@@ -4,6 +4,7 @@ DiRAC NVidia Hackathon - November 2024
 This code is still under active development so requires some user input to properly build the code.
 
 BUILD METHOD:
+-------------
 - clone repo
 - run ./autogen.sh
 - load modules needed and run ./configure
@@ -37,7 +38,7 @@ swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift
 
 
 
-BEDE specifics:
+**BEDE specifics:**
 - ./configure --disable-hand-vec
 - log onto GH login to compile
 - module load cuda
@@ -46,8 +47,19 @@ BEDE specifics:
 - module load hdf5
 
 
-TURSA specifics:
+**TURSA specifics:**
 - in progress
+
+
+SCIENCE IMPLEMENTATION NOTES:
+-----------------------------
+As its still under testing this is not an efficient science version yet. This version is for pp only interactions (pm interactions are multiplied through by 0 with the ultimate aim of being removed entirely from this section).
+
+Current biggest issues:
+- memory transfer bottleneck
+- high number of calls of single kernel
+- no multi-stream usage (essentially linear)
+- no optimisation
 
 
 <a name="logo"/>
