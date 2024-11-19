@@ -23,7 +23,7 @@ link.o: cuda.o
 	nvcc cuda.o -gencode arch=compute_70,code=sm_70 -arch=sm_70 -o link.o -lcudadevrt -lcudart -dlink
  </code>
 <code>
-swift$(EXEEXT): $\(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIES) 
+swift$(EXEEXT): $(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIES) 
 	@rm -f swift$(EXEEXT)
 	$(AM_V_CCLD) $(swift_LINK) cuda.o link.o  $(swift_OBJECTS) $(swift_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
  </code>
