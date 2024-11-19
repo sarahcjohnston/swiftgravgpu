@@ -23,6 +23,9 @@ cuda.o: grav_pp_offload.cu
 link.o: cuda.o
 	nvcc cuda.o -gencode arch=compute_70,code=sm_70 -arch=sm_70 -o link.o -lcudadevrt -lcudart -dlink
  </code>
+
+...
+
 <code>
 swift$(EXEEXT): $(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIES) 
 	@rm -f swift$(EXEEXT)
