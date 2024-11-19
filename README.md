@@ -8,6 +8,7 @@ BUILD METHOD:
 - run ./autogen.sh
 - EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
 
+<div>
 all: config.h cuda.o link.o
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -26,6 +27,7 @@ swift$(EXEEXT): $(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIE
 swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift_mpi_DEPENDENCIES) 
 	@rm -f swift_mpi$(EXEEXT)
 	$(AM_V_CCLD)$(swift_mpi_LINK) cuda.o link.o $(swift_mpi_OBJECTS) $(swift_mpi_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
+</div>
 
 - load modules needed and run ./configure
 - make
