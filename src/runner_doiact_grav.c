@@ -1184,6 +1184,7 @@ static INLINE void runner_dopair_grav_pm_truncated(
   }
 }
 
+extern void pp_offload(int periodic, const float *CoM_i, const float *CoM_j, float rmax_i, float rmax_j, double min_trunc, int* active_i, int* mpole_i, int* active_j, int* mpole_j, const float *dim, const float *x_i, const float *x_j_arr, const float *y_i, const float *y_j_arr, const float *z_i, const float *z_j_arr, float *pot_i, float *pot_j, float *a_x_i, float *a_y_i, float *a_z_i, float *a_x_j, float *a_y_j, float *a_z_j, float *mass_i_arr, float *mass_j_arr, const float *r_s_inv, float *h_i, float *h_j_arr, const int *gcount_i, const int *gcount_padded_i, const int *gcount_j, const int *gcount_padded_j, int ci_active, int cj_active, const int symmetric, const int allow_mpole, const struct multipole *restrict multi_i, const struct multipole *restrict multi_j, float *epsilon, const int *allow_multipole_j, const int *allow_multipole_i);
 /**
  * @brief Computes the interaction of all the particles in a cell with all the
  * particles of another cell.
@@ -1278,7 +1279,9 @@ void runner_dopair_grav_pp(struct runner *r, struct cell *ci, struct cell *cj,
                          cj_cache, cj->grav.parts, gcount_j, gcount_padded_j,
                          shift_j, CoM_i, ci->grav.multipole, cj,
                          e->gravity_properties);
+  pp_offload(periodic, CoM_i, CoM_j, rmax_i, rmax_j, min_trunc, ci_cache->active, ci_cache->use_mpole, cj_cache->active, cj_cache->use_mpole, dim, ci_cache->x, cj_cache->x, ci_cache->y, cj_cache->y, ci_cache->z, cj_cache->z, ci_cache->pot, cj_cache->pot, ci_cache->a_x, ci_cache->a_y, ci_cache->a_z, cj_cache->a_x, cj_cache->a_y, cj_cache->a_z, ci_cache->m, cj_cache->m, &r_s_inv, ci_cache->epsilon, cj_cache->epsilon, &gcount_i, &gcount_padded_i, &gcount_j, &gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, multi_i, multi_j, ci_cache->epsilon, &allow_multipole_j, &allow_multipole_i);
 
+  if (2<1){
   /* Can we use the Newtonian version or do we need the truncated one ? */
   if (!periodic) {
 
@@ -1393,6 +1396,7 @@ void runner_dopair_grav_pp(struct runner *r, struct cell *ci, struct cell *cj,
                                      ci);
       }
     }
+  }
   }
 
   /* Write back to the particles in ci */
