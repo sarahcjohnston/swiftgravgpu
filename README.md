@@ -6,6 +6,7 @@ This code is still under active development so requires some user input to prope
 BUILD METHOD:
 - clone repo
 - run ./autogen.sh
+- load modules needed and run ./configure
 - EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
 
 <code>
@@ -32,7 +33,6 @@ swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift
 	$(AM_V_CCLD)$(swift_mpi_LINK) cuda.o link.o $(swift_mpi_OBJECTS) $(swift_mpi_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
 </code>
 
-- load modules needed and run ./configure
 - make
 
 
