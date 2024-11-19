@@ -1,3 +1,37 @@
+DiRAC NVidia Hackathon - November 2024
+====================================================
+
+This code is still under active development so requires some user input to properly build the code.
+
+BUILD METHOD:
+- clone repo
+- run ./autogen.sh
+- EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
+
+all: config.h cuda.o link.o
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+
+cuda.o: grav_pp_offload.cu
+	nvcc -dc grav_pp_offload.cu -o cuda.o -gencode arch=compute_70,code=sm_70 -I./src -I. -fmad=false
+
+link.o: cuda.o
+	nvcc cuda.o -gencode arch=compute_70,code=sm_70 -arch=sm_70 -o link.o -lcudadevrt -lcudart -dlink
+
+...
+
+swift$(EXEEXT): $(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIES) 
+	@rm -f swift$(EXEEXT)
+	$(AM_V_CCLD) $(swift_LINK) cuda.o link.o  $(swift_OBJECTS) $(swift_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
+
+swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift_mpi_DEPENDENCIES) 
+	@rm -f swift_mpi$(EXEEXT)
+	$(AM_V_CCLD)$(swift_mpi_LINK) cuda.o link.o $(swift_mpi_OBJECTS) $(swift_mpi_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
+
+- load modules needed and run ./configure
+- make
+
+
+
 <a name="logo"/>
 <div align="center">
 <a href="https://www.swiftsim.com/" target="_blank">
