@@ -13,56 +13,7 @@
 //PP ALL INTERACTIONS
 __global__ void pair_grav_pp(int periodic, const float *CoM_i, const float *CoM_j, float rmax_i, float rmax_j, double min_trunc, int *active_i, int *mpole_i, int *active_j, int *mpole_j, float dim_0, float dim_1, float dim_2, float *h_i, float *h_j, float *mass_i_arr, float *mass_j_arr, const float r_s_inv, const float *x_i, const float *x_j, const float *y_i, const float *y_j, const float *z_i, const float *z_j, float *a_x_i, float *a_y_i, float *a_z_i, float *a_x_j, float *a_y_j, float *a_z_j, float *pot_i, float *pot_j, int gcount_i, int gcount_padded_i, int gcount_j, int gcount_padded_j, int ci_active, int cj_active, const int symmetric, const int allow_mpole, const struct multipole *restrict multi_i, const struct multipole *restrict multi_j, float *epsilon, const int allow_multipole_j, const int allow_multipole_i) {
 
-  /*int max_r_decision = 0;
-
-  if (!periodic) {
-
-    if (ci_active) {
-      grav_pp_full(active_i, mpole_i, dim_0, dim_1, dim_2, h_i, h_j, mass_j_arr, r_s_inv, x_i, x_j, y_i, y_j, z_i, z_j, a_x_i, a_y_i, a_z_i, pot_i, gcount_i, gcount_padded_j, periodic, ci_active, 0, symmetric, max_r_decision);
-      
-    }
-    if (cj_active && symmetric) {
-      grav_pp_full(active_j, mpole_j, dim_0, dim_1, dim_2, h_j, h_i, mass_i_arr, r_s_inv, x_j, x_i, y_j, y_i, z_j, z_i, a_x_j, a_y_j, a_z_j, pot_j, gcount_j, gcount_padded_i, periodic, 0, cj_active, symmetric, max_r_decision);
-
-   }
-
-  } else {
-    double d[3] = {CoM_j[0] - CoM_i[0], CoM_j[1] - CoM_i[1],
-                    CoM_j[2] - CoM_i[2]};
-
-    d[0] = nearestf1(d[0], dim_0);
-    d[1] = nearestf1(d[1], dim_1);
-    d[2] = nearestf1(d[2], dim_2);
-
-    const double r2 = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
-
-    const double max_r = sqrt(r2) + rmax_i + rmax_j;
-
-    if (max_r > min_trunc) {
-
-      if (ci_active) {
-        grav_pp_truncated(active_i, mpole_i, dim_0, dim_1, dim_2, h_i, h_j, mass_j_arr, r_s_inv, x_i, x_j, y_i, y_j, z_i, z_j, a_x_i, a_y_i, a_z_i, pot_i, gcount_i, gcount_padded_j, periodic, ci_active, 0, symmetric, max_r_decision);
-
-      }
-      if (cj_active && symmetric) {
-       grav_pp_truncated(active_j, mpole_j, dim_0, dim_1, dim_2, h_j, h_i, mass_i_arr, r_s_inv, x_j, x_i, y_j, y_i, z_j, z_i, a_x_j, a_y_j, a_z_j, pot_j, gcount_j, gcount_padded_i, periodic, 0, cj_active, symmetric, max_r_decision);
-       }
-
-    } else {
-      if (ci_active) {
-        grav_pp_full(active_i, mpole_i, dim_0, dim_1, dim_2, h_i, h_j, mass_j_arr, r_s_inv, x_i, x_j, y_i, y_j, z_i, z_j, a_x_i, a_y_i, a_z_i, pot_i, gcount_i, gcount_padded_j, periodic, ci_active, 0, symmetric, max_r_decision);
-
-      }
-      if (cj_active && symmetric) {
-        grav_pp_full(active_j, mpole_j, dim_0, dim_1, dim_2, h_j, h_i, mass_i_arr, r_s_inv, x_j, x_i, y_j, y_i, z_j, z_i, a_x_j, a_y_j, a_z_j, pot_j, gcount_j, gcount_padded_i, periodic, 0, cj_active, symmetric, max_r_decision);
-
-      }
-    }
-  }*/
-  
-  
-   //-----------------------------------------------------------------------------------------------
-   int max_r_decision = 0;
+	int max_r_decision = 0;
 
       /* Can we use the Newtonian version or do we need the truncated one ? */
 
@@ -144,7 +95,7 @@ __global__ void pair_grav_pp(int periodic, const float *CoM_i, const float *CoM_
 //do not touch these variables you dumbass you need them to be pointers girly
 extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j, float rmax_i, float rmax_j, double min_trunc, int* active_i, int* mpole_i, int* active_j, int* mpole_j, float *dim, const float *x_i, const float *x_j_arr, const float *y_i, const float *y_j_arr, const float *z_i, const float *z_j_arr, float *pot_i, float *pot_j, float *a_x_i, float *a_y_i, float *a_z_i, float *a_x_j, float *a_y_j, float *a_z_j, float *mass_i_arr, float *mass_j_arr, const float *r_s_inv, float *h_i, float *h_j_arr, const int *gcount_i, const int *gcount_padded_i, const int *gcount_j, const int *gcount_padded_j, int ci_active, int cj_active, const int symmetric, const int allow_mpole, const struct multipole *restrict multi_i, const struct multipole *restrict multi_j, float *epsilon, const int *allow_multipole_j, const int *allow_multipole_i){
 
-	cudaDeviceSynchronize();
+	//cudaDeviceSynchronize();
 	
 	float a_x_i_new[*gcount_i];
 	float a_y_i_new[*gcount_i];
@@ -182,7 +133,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	float *d_CoM_i;
 	float *d_CoM_j;
 
-	cudaDeviceSynchronize();
+	//cudaDeviceSynchronize();
 
         //cudaMalloc(&h_multi_j, 13*sizeof(float));
         //cudaMemcpy(h_multi_j, multi_j, 13*sizeof(float), cudaMemcpyHostToDevice);
@@ -251,12 +202,12 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
     	if (err != cudaSuccess) 
 	printf("Error1: %s\n", cudaGetErrorString(err));
 
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
 
 	//call kernel function
 	pair_grav_pp<<<1024,1024>>>(periodic, d_CoM_i, d_CoM_j, rmax_i, rmax_j, min_trunc, d_active_i, d_mpole_i, d_active_j, d_mpole_j, dim[0], dim[1], dim[2], d_h_i, d_h_j, d_mass_i, d_mass_j, *r_s_inv, d_x_i, d_x_j, d_y_i, d_y_j, d_z_i, d_z_j, d_a_x_i, d_a_y_i, d_a_z_i, d_a_x_j, d_a_y_j, d_a_z_j, d_pot_i, d_pot_j, *gcount_i, *gcount_padded_i, *gcount_j, *gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, d_multi_i, d_multi_j, epsilon, *allow_multipole_j, *allow_multipole_i);
 
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
 
 	cudaError_t err2 = cudaGetLastError();
     	if (err2 != cudaSuccess)
