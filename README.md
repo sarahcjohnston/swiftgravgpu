@@ -64,6 +64,11 @@ Current biggest issues:
 - no multi-stream usage (essentially linear)
 - no optimisation
 
+Other dev points (for Sarah reference):
+- no current way to automake the GPU inclusive Makefile
+- not with a GPU option you can turn on/off
+- badly written, lots of bonus extra code to get rid of
+
 
 <a name="logo"/>
 <div align="center">
