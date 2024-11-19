@@ -8,28 +8,46 @@ BUILD METHOD:
 - run ./autogen.sh
 - EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
 
-<div>
+<code>
 all: config.h cuda.o link.o
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+ </code>
 
+<code>
 cuda.o: grav_pp_offload.cu
 	nvcc -dc grav_pp_offload.cu -o cuda.o -gencode arch=compute_70,code=sm_70 -I./src -I. -fmad=false
-
+ </code>
+<code>
 link.o: cuda.o
 	nvcc cuda.o -gencode arch=compute_70,code=sm_70 -arch=sm_70 -o link.o -lcudadevrt -lcudart -dlink
-
-swift$\(EXEEXT): $\(swift_OBJECTS) $\(swift_DEPENDENCIES) $\(EXTRA_swift_DEPENDENCIES) 
-	\@rm -f swift$\(EXEEXT)
+ </code>
+<code>
+swift$(EXEEXT): $\(swift_OBJECTS) $(swift_DEPENDENCIES) $(EXTRA_swift_DEPENDENCIES) 
+	@rm -f swift$(EXEEXT)
 	$(AM_V_CCLD) $(swift_LINK) cuda.o link.o  $(swift_OBJECTS) $(swift_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
-
+ </code>
+<code>
 swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift_mpi_DEPENDENCIES) 
 	@rm -f swift_mpi$(EXEEXT)
 	$(AM_V_CCLD)$(swift_mpi_LINK) cuda.o link.o $(swift_mpi_OBJECTS) $(swift_mpi_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
-</div>
+</code>
 
 - load modules needed and run ./configure
 - make
 
+
+
+BEDE specifics:
+- ./configure --disable-hand-vec
+- log onto GH login to compile
+- module load cuda
+- module load gcc
+- module load fftw
+- module load hdf5
+
+
+TURSA specifics:
+- in progress
 
 
 <a name="logo"/>
