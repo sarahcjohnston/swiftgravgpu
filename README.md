@@ -21,7 +21,11 @@ BUILD METHOD:
 
 
 **TURSA specifics:**
-- in progress
+- module load cuda (defaults to cuda 12)
+- module load gcc
+- spack load hdf5 (spack installed hdf5 needed)
+- remove <code> -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 </code> from swift and swift_mpi Makefile.in lines
+- add  <code> -L/mnt/lustre/tursafs1/apps/cuda/12.3/lib64/ </code> to swift and swift_mpi Makefile.in lines
 
 **PREVIOUS MANUAL BUILD CHANGES**
 - EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
