@@ -8,6 +8,22 @@ BUILD METHOD:
 - clone repo
 - run ./autogen.sh
 - load modules needed and run ./configure
+- thanks to Peter Draper for his help with updating the Makefile now just make!
+
+
+**BEDE specifics:**
+- ./configure --disable-hand-vec
+- log onto GH login to compile
+- module load cuda
+- module load gcc
+- module load fftw
+- module load hdf5
+
+
+**TURSA specifics:**
+- in progress
+
+**PREVIOUS MANUAL BUILD CHANGES**
 - EDIT MAKEFILE.IN to contain the following lines in place of those generated (note the number changes depending on the device: V100: 70, A100: 80, GH: 90)
 
 <code>
@@ -36,22 +52,7 @@ swift_mpi$(EXEEXT): $(swift_mpi_OBJECTS) $(swift_mpi_DEPENDENCIES) $(EXTRA_swift
 	@rm -f swift_mpi$(EXEEXT)
 	$(AM_V_CCLD)$(swift_mpi_LINK) cuda.o link.o $(swift_mpi_OBJECTS) $(swift_mpi_LDADD) $(LIBS) -lcudadevrt -lcudart -lcuda -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lstdc++ -ldl -lm -pthread
 </code>
-
 - make
-
-
-
-**BEDE specifics:**
-- ./configure --disable-hand-vec
-- log onto GH login to compile
-- module load cuda
-- module load gcc
-- module load fftw
-- module load hdf5
-
-
-**TURSA specifics:**
-- in progress
 
 
 SCIENCE IMPLEMENTATION NOTES:
