@@ -88,8 +88,8 @@ cuda.o: grav_pp_offload.cu
 link.o: cuda.o
 	nvcc cuda.o -gencode arch=compute_80,code=sm_80 -arch=sm_80 -o link.o -lcudadevrt -lcudart -dlink
 
-CUDALDFLAGS = -L/usr/local/cuda/lib64
-CUDALIBS=-lcudadevrt -lcudart -lcuda -lstdc++
+CUDALDFLAGS = -L/mnt/lustre/tursafs1/apps/cuda/12.3/lib64/
+CUDALIBS= -lcudart -lstdc++
 
 # Sources for swift
 swift_SOURCES = swift.c
