@@ -83,10 +83,10 @@ endif
 
 #  CUDA sources.
 cuda.o: grav_pp_offload.cu
-	nvcc -dc grav_pp_offload.cu -o cuda.o -gencode arch=compute_90,code=sm_90 -I./src -I. -fmad=false
+	nvcc -dc grav_pp_offload.cu -o cuda.o -gencode arch=compute_80,code=sm_80 -I./src -I. -fmad=false
 
 link.o: cuda.o
-	nvcc cuda.o -gencode arch=compute_90,code=sm_90 -arch=sm_90 -o link.o -lcudadevrt -lcudart -dlink
+	nvcc cuda.o -gencode arch=compute_80,code=sm_80 -arch=sm_80 -o link.o -lcudadevrt -lcudart -dlink
 
 CUDALDFLAGS = -L/usr/local/cuda/lib64
 CUDALIBS=-lcudadevrt -lcudart -lcuda -lstdc++
