@@ -3537,7 +3537,7 @@ void engine_init(
 #endif
 
   /* In GPU land, we need to create our cuda streams. */
-  create_persistent_cuda_streams(/*TODO: don't hardcode this. num_streams*/ 16)
+  engine_cuda_init_streams(/*TODO: don't hardcode this. num_streams*/ 16)
 }
 
 /**
