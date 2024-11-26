@@ -23,7 +23,7 @@ struct cuda_streams {
   int nstreams;
 };
 
-extern cuda_streams *streams;
+extern struct cuda_streams *streams;
 
 /**
  * @brief Function to create the CUDA streams.
