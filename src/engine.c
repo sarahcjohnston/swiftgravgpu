@@ -106,6 +106,9 @@
 #include "units.h"
 #include "velociraptor_interface.h"
 
+/* Local Cuda headers. */
+#include "cuda_streams.h"
+
 const char *engine_policy_names[] = {"none",
                                      "rand",
                                      "steal",
@@ -2869,9 +2872,9 @@ int engine_step(struct engine *e) {
             e->collect_group1.csds_file_size_gb);
 #endif
 
-    /********************************************************/
-    /* OK, we are done with the regular stuff. Time for i/o */
-    /********************************************************/
+  /********************************************************/
+  /* OK, we are done with the regular stuff. Time for i/o */
+  /********************************************************/
 
 #ifdef WITH_LIGHTCONE
   /* Flush lightcone buffers if necessary */
@@ -3532,6 +3535,9 @@ void engine_init(
     csds_init(e->csds, e, params);
   }
 #endif
+
+  /* In GPU land, we need to create our cuda streams. */
+  create_persistent_cuda_streams(/*TODO: don't hardcode this. num_streams*/ 16)
 }
 
 /**
