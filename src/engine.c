@@ -149,9 +149,6 @@ int engine_rank;
 /** The current step of the engine as a global variable (for messages). */
 int engine_current_step;
 
-/* Declare the CUDA streams. */
-struct cuda_streams *streams;
-
 /**
  * @brief Link a density/force task to a cell.
  *
