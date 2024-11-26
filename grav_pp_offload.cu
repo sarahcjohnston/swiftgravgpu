@@ -214,15 +214,15 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	printf("Error2: %s\n", cudaGetErrorString(err2));
 
 	//copy data from device
-	cudaMemcpyAsync(&a_x_i_new, d_a_x_i, *gcount_i*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&a_y_i_new, d_a_y_i, *gcount_i*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&a_z_i_new, d_a_z_i, *gcount_i*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&pot_i_new, d_pot_i, *gcount_i*sizeof(float), cudaMemcpyAsyncDeviceToHost);
+	cudaMemcpyAsync(&a_x_i_new, d_a_x_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_y_i_new, d_a_y_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_z_i_new, d_a_z_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&pot_i_new, d_pot_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
 
-	cudaMemcpyAsync(&a_x_j_new, d_a_x_j, *gcount_j*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&a_y_j_new, d_a_y_j, *gcount_j*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&a_z_j_new, d_a_z_j, *gcount_j*sizeof(float), cudaMemcpyAsyncDeviceToHost);
-	cudaMemcpyAsync(&pot_j_new, d_pot_j, *gcount_j*sizeof(float), cudaMemcpyAsyncDeviceToHost);
+	cudaMemcpyAsync(&a_x_j_new, d_a_x_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_y_j_new, d_a_y_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_z_j_new, d_a_z_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&pot_j_new, d_pot_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
 
         //printf("%.16f %.16f %.16f %.16f\n", a_x_i_new[0], a_y_i_new[0], a_z_i_new[0], pot_i_new[0]);
 
