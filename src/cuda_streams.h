@@ -93,3 +93,16 @@ int destroy_persistent_cuda_streams() {
   /* Return success */
   return 0;
 }
+
+/**
+ * @brief Function to get a CUDA stream.
+ *
+ * @param index The index of the CUDA stream to get.
+ * @return The CUDA stream at the given index.
+ */
+cudaStream_t get_cuda_stream(int index) {
+  if (index < streams->nstreams && index >= 0) {
+    return streams->streams[index];
+  }
+  return 0;
+}
