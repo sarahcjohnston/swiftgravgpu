@@ -11,7 +11,7 @@
 #include "multipole_struct.h"
 
 /* Local Cuda includes */ 
-#include "cude_streams.h"
+#include "cuda_streams.h"
 
 
 //PP ALL INTERACTIONS
