@@ -99,6 +99,14 @@ __global__ void pair_grav_pp(int periodic, const float *CoM_i, const float *CoM_
 //do not touch these variables you dumbass you need them to be pointers girly
 extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j, float rmax_i, float rmax_j, double min_trunc, int* active_i, int* mpole_i, int* active_j, int* mpole_j, float *dim, const float *x_i, const float *x_j_arr, const float *y_i, const float *y_j_arr, const float *z_i, const float *z_j_arr, float *pot_i, float *pot_j, float *a_x_i, float *a_y_i, float *a_z_i, float *a_x_j, float *a_y_j, float *a_z_j, float *mass_i_arr, float *mass_j_arr, const float *r_s_inv, float *h_i, float *h_j_arr, const int *gcount_i, const int *gcount_padded_i, const int *gcount_j, const int *gcount_padded_j, int ci_active, int cj_active, const int symmetric, const int allow_mpole, const struct multipole *restrict multi_i, const struct multipole *restrict multi_j, float *epsilon, const int *allow_multipole_j, const int *allow_multipole_i){
 
+	// Unpack some device information we'll use 
+        int device;
+	cudaGetDevice(&device);  // Get the current device ID
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, device);  // Get properties of the device
+	int nr_sms = deviceProp.multiProcessorCount;
+	
+
 	//cudaDeviceSynchronize();
 	
 	float a_x_i_new[*gcount_i];
@@ -209,7 +217,8 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
         //cudaDeviceSynchronize();
 
 	//call kernel function
-	pair_grav_pp<<<1024,1024>>>(periodic, d_CoM_i, d_CoM_j, rmax_i, rmax_j, min_trunc, d_active_i, d_mpole_i, d_active_j, d_mpole_j, dim[0], dim[1], dim[2], d_h_i, d_h_j, d_mass_i, d_mass_j, *r_s_inv, d_x_i, d_x_j, d_y_i, d_y_j, d_z_i, d_z_j, d_a_x_i, d_a_y_i, d_a_z_i, d_a_x_j, d_a_y_j, d_a_z_j, d_pot_i, d_pot_j, *gcount_i, *gcount_padded_i, *gcount_j, *gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, d_multi_i, d_multi_j, epsilon, *allow_multipole_j, *allow_multipole_i);
+	// The multiple of nr_sms below is entirely arbitrary, TODO: should be a parameter in the long run
+	pair_grav_pp<<<4 * nr_sms, 256>>>(periodic, d_CoM_i, d_CoM_j, rmax_i, rmax_j, min_trunc, d_active_i, d_mpole_i, d_active_j, d_mpole_j, dim[0], dim[1], dim[2], d_h_i, d_h_j, d_mass_i, d_mass_j, *r_s_inv, d_x_i, d_x_j, d_y_i, d_y_j, d_z_i, d_z_j, d_a_x_i, d_a_y_i, d_a_z_i, d_a_x_j, d_a_y_j, d_a_z_j, d_pot_i, d_pot_j, *gcount_i, *gcount_padded_i, *gcount_j, *gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, d_multi_i, d_multi_j, epsilon, *allow_multipole_j, *allow_multipole_i);
 
         //cudaDeviceSynchronize();
 
