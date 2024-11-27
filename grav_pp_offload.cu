@@ -11,7 +11,7 @@
 #include "multipole_struct.h"
 
 /* Local Cuda includes */ 
-#include "cuda_streams.h"
+#include "src/cuda_streams.h"
 
 
 //PP ALL INTERACTIONS
@@ -148,7 +148,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	/* Get a stream to use (for testing these run 0-3 inclusive), we'll 
 	 * randomly select one for now. */
 	int rand_stream = rand() % 4;
-	cudaStream_t stream = get_cuda_stream(rand_stream);
+	cudaStream_t stream = streams->streams[rand_stream];
 
 	//cudaDeviceSynchronize();
 
