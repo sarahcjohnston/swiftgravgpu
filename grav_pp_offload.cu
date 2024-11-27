@@ -158,7 +158,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
      	cudaMallocAsync(&d_multi_j, sizeof(multipole), stream);
      	cudaMemcpyAsync(d_multi_j, multi_j, sizeof(multipole), cudaMemcpyHostToDevice, stream);
 	multipole* d_multi_i;
-     	cudaMalloc(&d_multi_i, sizeof(multipole), stream);
+     	cudaMallocAsync(&d_multi_i, sizeof(multipole), stream);
      	cudaMemcpyAsync(d_multi_i, multi_i, sizeof(multipole), cudaMemcpyHostToDevice, stream);
 
 	//allocate memory on device
