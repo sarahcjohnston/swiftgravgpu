@@ -244,7 +244,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 
         //printf("%.16f %.16f %.16f %.16f\n", a_x_i_new[0], a_y_i_new[0], a_z_i_new[0], pot_i_new[0]);
 
-	cudaDeviceSynchronize();
+	cudaStreamSynchronize(stream);
 
 	cudaError_t err3 = cudaGetLastError();
     	if (err3 != cudaSuccess)
