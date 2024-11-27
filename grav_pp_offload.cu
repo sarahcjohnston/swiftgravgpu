@@ -147,7 +147,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 
 	/* Get a stream to use (for testing these run 0-3 inclusive), we'll 
 	 * randomly select one for now. */
-	int rand_stream = rand() % 4;
+	int rand_stream = rand() % 8;
 	cudaStream_t stream = streams->streams[rand_stream];
 
 	//cudaDeviceSynchronize();
