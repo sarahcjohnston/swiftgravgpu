@@ -554,8 +554,6 @@ __device__ float long_grav_eval(const float r_over_r_s, float *corr_f, float *co
 
   *corr_f = W;
 #endif
-
-  return corr_f;
 }
 
 __device__ void gravity_M2P(const struct multipole *const m, const float r_x, const float r_y, const float r_z, const float r2, const float eps, const int periodic, const float rs_inv, struct reduced_grav_tensor *const l) {
