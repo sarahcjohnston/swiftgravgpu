@@ -145,68 +145,73 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	float *d_CoM_i;
 	float *d_CoM_j;
 
+	/* Get a stream to use (for testing these run 0-3 inclusive), we'll 
+	 * randomly select one for now. */
+	int rand_stream = rand() % 4;
+	cudaStream_t stream = get_cuda_stream(rand_stream);
+
 	//cudaDeviceSynchronize();
 
         //cudaMalloc(&h_multi_j, 13*sizeof(float));
         //cudaMemcpyAsync(h_multi_j, multi_j, 13*sizeof(float), cudaMemcpyHostToDevice);
 	multipole* d_multi_j;
-     	cudaMalloc(&d_multi_j, sizeof(multipole)); 
-     	cudaMemcpyAsync(d_multi_j, multi_j, sizeof(multipole), cudaMemcpyHostToDevice);
+     	cudaMallocAsync(&d_multi_j, sizeof(multipole), stream);
+     	cudaMemcpyAsync(d_multi_j, multi_j, sizeof(multipole), cudaMemcpyHostToDevice, stream);
 	multipole* d_multi_i;
-     	cudaMalloc(&d_multi_i, sizeof(multipole)); 
-     	cudaMemcpyAsync(d_multi_i, multi_i, sizeof(multipole), cudaMemcpyHostToDevice);
+     	cudaMalloc(&d_multi_i, sizeof(multipole), stream);
+     	cudaMemcpyAsync(d_multi_i, multi_i, sizeof(multipole), cudaMemcpyHostToDevice, stream);
 
 	//allocate memory on device
-	cudaMalloc(&d_h_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_h_j, *gcount_padded_j * sizeof(float));
-	cudaMalloc(&d_mass_i, *gcount_padded_i * sizeof(float));
-	cudaMalloc(&d_mass_j, *gcount_padded_j * sizeof(float));
-	cudaMalloc(&d_x_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_x_j, *gcount_padded_j * sizeof(float));
-	cudaMalloc(&d_y_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_y_j, *gcount_padded_j * sizeof(float));
-	cudaMalloc(&d_z_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_z_j, *gcount_padded_j * sizeof(float));
-	cudaMalloc(&d_a_x_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_a_y_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_a_z_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_a_x_j, *gcount_j * sizeof(float));
-	cudaMalloc(&d_a_y_j, *gcount_j * sizeof(float));
-	cudaMalloc(&d_a_z_j, *gcount_j * sizeof(float));
-	cudaMalloc(&d_pot_i, *gcount_i * sizeof(float));
-	cudaMalloc(&d_pot_j, *gcount_j * sizeof(float));
-	cudaMalloc(&d_active_i, *gcount_i * sizeof(int));
-	cudaMalloc(&d_mpole_i, *gcount_i * sizeof(int));
-	cudaMalloc(&d_active_j, *gcount_j * sizeof(int));
-	cudaMalloc(&d_mpole_j, *gcount_j * sizeof(int));
-	cudaMalloc(&d_CoM_i, 3 * sizeof(float));
-	cudaMalloc(&d_CoM_j, 3 * sizeof(float));
+	cudaMallocAsync(&d_h_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_h_j, *gcount_padded_j * sizeof(float), stream);
+	cudaMallocAsync(&d_mass_i, *gcount_padded_i * sizeof(float), stream);
+	cudaMallocAsync(&d_mass_j, *gcount_padded_j * sizeof(float), stream);
+	cudaMallocAsync(&d_x_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_x_j, *gcount_padded_j * sizeof(float), stream);
+	cudaMallocAsync(&d_y_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_y_j, *gcount_padded_j * sizeof(float), stream);
+	cudaMallocAsync(&d_z_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_z_j, *gcount_padded_j * sizeof(float), stream);
+	cudaMallocAsync(&d_a_x_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_a_y_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_a_z_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_a_x_j, *gcount_j * sizeof(float), stream);
+	cudaMallocAsync(&d_a_y_j, *gcount_j * sizeof(float), stream);
+	cudaMallocAsync(&d_a_z_j, *gcount_j * sizeof(float), stream);
+	cudaMallocAsync(&d_pot_i, *gcount_i * sizeof(float), stream);
+	cudaMallocAsync(&d_pot_j, *gcount_j * sizeof(float), stream);
+	cudaMallocAsync(&d_active_i, *gcount_i * sizeof(int), stream);
+	cudaMallocAsync(&d_mpole_i, *gcount_i * sizeof(int), stream);
+	cudaMallocAsync(&d_active_j, *gcount_j * sizeof(int), stream);
+	cudaMallocAsync(&d_mpole_j, *gcount_j * sizeof(int), stream);
+	cudaMallocAsync(&d_CoM_i, 3 * sizeof(float), stream);
+	cudaMallocAsync(&d_CoM_j, 3 * sizeof(float), stream);
 
 	//copy data to device
-	cudaMemcpyAsync(d_h_i, h_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_h_j, h_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_mass_i, mass_i_arr, *gcount_padded_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_mass_j, mass_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_x_i, x_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_x_j, x_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_y_i, y_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_y_j, y_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_z_i, z_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_z_j, z_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_x_i, a_x_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_y_i, a_y_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_z_i, a_z_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_x_j, a_x_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_y_j, a_y_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_a_z_j, a_z_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_pot_i, pot_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_pot_j, pot_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_active_i, active_i, *gcount_i * sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_mpole_i, mpole_i, *gcount_i * sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_active_j, active_j, *gcount_j * sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_mpole_j, mpole_j, *gcount_j * sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_CoM_i, CoM_i, 3 * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpyAsync(d_CoM_j, CoM_j, 3 * sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpyAsync(d_h_i, h_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_h_j, h_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_mass_i, mass_i_arr, *gcount_padded_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_mass_j, mass_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_x_i, x_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_x_j, x_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_y_i, y_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_y_j, y_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_z_i, z_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_z_j, z_j_arr, *gcount_padded_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_x_i, a_x_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_y_i, a_y_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_z_i, a_z_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_x_j, a_x_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_y_j, a_y_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_a_z_j, a_z_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_pot_i, pot_i, *gcount_i * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_pot_j, pot_j, *gcount_j * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_active_i, active_i, *gcount_i * sizeof(int), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_mpole_i, mpole_i, *gcount_i * sizeof(int), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_active_j, active_j, *gcount_j * sizeof(int), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_mpole_j, mpole_j, *gcount_j * sizeof(int), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_CoM_i, CoM_i, 3 * sizeof(float), cudaMemcpyHostToDevice, stream);
+	cudaMemcpyAsync(d_CoM_j, CoM_j, 3 * sizeof(float), cudaMemcpyHostToDevice, stream);
 	
 	//printf("%.16f %.16f\n", x_i[0], y_i[0]);
 
@@ -227,15 +232,15 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	printf("Error2: %s\n", cudaGetErrorString(err2));
 
 	//copy data from device
-	cudaMemcpyAsync(&a_x_i_new, d_a_x_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&a_y_i_new, d_a_y_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&a_z_i_new, d_a_z_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&pot_i_new, d_pot_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_x_i_new, d_a_x_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&a_y_i_new, d_a_y_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&a_z_i_new, d_a_z_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&pot_i_new, d_pot_i, *gcount_i*sizeof(float), cudaMemcpyDeviceToHost, stream);
 
-	cudaMemcpyAsync(&a_x_j_new, d_a_x_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&a_y_j_new, d_a_y_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&a_z_j_new, d_a_z_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
-	cudaMemcpyAsync(&pot_j_new, d_pot_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpyAsync(&a_x_j_new, d_a_x_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&a_y_j_new, d_a_y_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&a_z_j_new, d_a_z_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost, stream);
+	cudaMemcpyAsync(&pot_j_new, d_pot_j, *gcount_j*sizeof(float), cudaMemcpyDeviceToHost, stream);
 
         //printf("%.16f %.16f %.16f %.16f\n", a_x_i_new[0], a_y_i_new[0], a_z_i_new[0], pot_i_new[0]);
 
@@ -268,32 +273,32 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
 	//printf("RESULT2: %f %f %f %f ", a_x_new[0], a_y_new[0], a_z_new[0], pot_new[0]);
 
 	//free memory
-	cudaFree(d_h_i);
-	cudaFree(d_h_j);
-	cudaFree(d_mass_i);
-	cudaFree(d_mass_j);
-	cudaFree(d_x_i);
-	cudaFree(d_x_j);
-	cudaFree(d_y_i);
-	cudaFree(d_y_j);
-	cudaFree(d_z_i);
-	cudaFree(d_z_j);
-	cudaFree(d_a_x_i);
-	cudaFree(d_a_y_i);
-	cudaFree(d_a_z_i);
-	cudaFree(d_a_x_j);
-	cudaFree(d_a_y_j);
-	cudaFree(d_a_z_j);
-	cudaFree(d_pot_i);
-	cudaFree(d_pot_j);
-	cudaFree(d_active_i);
-	cudaFree(d_mpole_i);
-	cudaFree(d_active_j);
-	cudaFree(d_mpole_j);
-	cudaFree(d_CoM_i);
-	cudaFree(d_CoM_j);
-	cudaFree(d_multi_j);
-	cudaFree(d_multi_i);
+	cudaFreeAsync(d_h_i, stream);
+	cudaFreeAsync(d_h_j,stream);
+	cudaFreeAsync(d_mass_i,stream);
+	cudaFreeAsync(d_mass_j,stream);
+	cudaFreeAsync(d_x_i,stream);
+	cudaFreeAsync(d_x_j,stream);
+	cudaFreeAsync(d_y_i,stream);
+	cudaFreeAsync(d_y_j,stream);
+	cudaFreeAsync(d_z_i,stream);
+	cudaFreeAsync(d_z_j,stream);
+	cudaFreeAsync(d_a_x_i,stream);
+	cudaFreeAsync(d_a_y_i,stream);
+	cudaFreeAsync(d_a_z_i,stream);
+	cudaFreeAsync(d_a_x_j,stream);
+	cudaFreeAsync(d_a_y_j,stream);
+	cudaFreeAsync(d_a_z_j,stream);
+	cudaFreeAsync(d_pot_i,stream);
+	cudaFreeAsync(d_pot_j,stream);
+	cudaFreeAsync(d_active_i,stream);
+	cudaFreeAsync(d_mpole_i,stream);
+	cudaFreeAsync(d_active_j,stream);
+	cudaFreeAsync(d_mpole_j,stream);
+	cudaFreeAsync(d_CoM_i,stream);
+	cudaFreeAsync(d_CoM_j,stream);
+	cudaFreeAsync(d_multi_j,stream);
+	cudaFreeAsync(d_multi_i,stream);
 
 	cudaError_t err4 = cudaGetLastError();
     	if (err4 != cudaSuccess)
