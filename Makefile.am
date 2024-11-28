@@ -86,7 +86,7 @@ cuda.o: grav_pp_offload.cu
 	nvcc -dc grav_pp_offload.cu -o cuda.o -arch=native -I./src -I. -fmad=false
 
 link.o: cuda.o
-	nvcc cuda.o -gencode -arch=native -o link.o -lcudadevrt -lcudart -dlink
+	nvcc cuda.o -arch=native -o link.o -lcudadevrt -lcudart -dlink
 
 gpu_params.o: src/gpu_params.cu
 	nvcc -dc src/gpu_params.cu -o gpu_params.o -arch=native -I./src -I. -fmad=false
