@@ -89,7 +89,7 @@ link.o: cuda.o
 	nvcc cuda.o -gencode -arch=native -o link.o -lcudadevrt -lcudart -dlink
 
 gpu_params.o: src/gpu_params.cu
-	nvcc -dc gpu_params.cu -o gpu_params.o -arch=native -I./src -I. -fmad=false
+	nvcc -dc src/gpu_params.cu -o gpu_params.o -arch=native -I./src -I. -fmad=false
 
 link_params.o: gpu_params.o
 	nvcc gpu_params.o -arch=native -o link_params.o -lcudadevrt -lcudart -dlink
