@@ -79,7 +79,7 @@ include_HEADERS += adaptive_softening.h adaptive_softening_iact.h adaptive_softe
 include_HEADERS += forcing.h
 include_HEADERS += power_spectrum.h
 include_HEADERS += ghost_stats.h
-include_HEADERS += cuda_streams.h
+include_HEADERS += cuda_streams.h gpu_params.h
 
 # source files for EAGLE extra I/O
 EAGLE_EXTRA_IO_SOURCES=
@@ -207,7 +207,7 @@ AM_SOURCES += $(AGORA_FEEDBACK_SOURCES)
 AM_SOURCES += $(PS2020_COOLING_SOURCES)
 AM_SOURCES += $(SPHM1RT_RT_SOURCES)
 AM_SOURCES += $(GEAR_RT_SOURCES)
-AM_SOURCES += cuda_streams.c
+AM_SOURCES += cuda_streams.c gpu_params.c
 
 # Include files for distribution, not installation.
 nobase_noinst_HEADERS = align.h approx_math.h atomic.h barrier.h cycle.h error.h inline.h kernel_hydro.h kernel_gravity.h 
