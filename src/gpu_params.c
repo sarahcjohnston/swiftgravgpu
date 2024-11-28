@@ -9,6 +9,8 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
+extern void gpu_device_props(struct gpu_info *gpu_info);
+
 void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
 
   /* Allocate memory for the gpu properties. */
