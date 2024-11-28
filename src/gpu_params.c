@@ -11,10 +11,11 @@
 
 extern void gpu_device_props(struct gpu_info *gpu_info);
 
-void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
+gpu_info gpu_init_info(struct swift_params *params) {
 
   /* Allocate memory for the gpu properties. */
-  gpu_info = (struct gpu_info *)malloc(sizeof(struct gpu_info));
+  struct gpu_info *gpu_info =
+      (struct gpu_info *)malloc(sizeof(struct gpu_info));
 
   /* Get all the device properties */
   gpu_device_props(gpu_info);
@@ -43,4 +44,6 @@ void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
   message("Max threads per block dimension z: %d",
           gpu_info->max_threads_per_block_dimension_z);
   message("Number of CUDA streams: %d", gpu_info->nr_streams);
+
+  return gpu_info;
 }

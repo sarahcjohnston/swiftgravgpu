@@ -3538,7 +3538,7 @@ void engine_init(
 #endif
 
   /* In GPU land, we need to create our cuda streams. */
-  gpu_init_info(e->gpu_info, params);
+  e->gpu_info = gpu_init_info(params);
   engine_cuda_init_streams(e->gpu_info->nr_streams);
 }
 
