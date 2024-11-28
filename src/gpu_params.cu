@@ -1,8 +1,10 @@
 
 #include "gpu_params.h"
 
+#include <cuda_runtime.h>
 
-void gpu_device_props(struct gpu_info *gpu_info) {
+
+extern void gpu_device_props(struct gpu_info *gpu_info) {
 
   /* Set the device ID */
   cudaGetDevice(&gpu_info->device_id);

@@ -38,6 +38,6 @@ struct gpu_info {
 };
 
 void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params);
-void gpu_device_props(struct gpu_info *gpu_info);
+extern void gpu_device_props(struct gpu_info *gpu_info);
 
 #endif  // GPU_PARAMS_H
