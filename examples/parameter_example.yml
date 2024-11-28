@@ -1029,3 +1029,4 @@ Lightcone1:
 
 GPU:
   nstreams: 8
+  sms_multiple: 4

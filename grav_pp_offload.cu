@@ -265,8 +265,7 @@ extern "C" void pp_offload(int periodic, const float *CoM_i, const float *CoM_j,
         //cudaDeviceSynchronize();
 
 	//call kernel function
-	// The multiple of nr_sms below is entirely arbitrary, TODO: should be a parameter in the long run
-	pair_grav_pp<<<4 * gpu_info->nr_sm, 256, 0, stream>>>(periodic, d_CoM_i, d_CoM_j, rmax_i, rmax_j, min_trunc, d_active_i, d_mpole_i, d_active_j, d_mpole_j, dim[0], dim[1], dim[2], d_h_i, d_h_j, d_mass_i, d_mass_j, *r_s_inv, d_x_i, d_x_j, d_y_i, d_y_j, d_z_i, d_z_j, d_a_x_i, d_a_y_i, d_a_z_i, d_a_x_j, d_a_y_j, d_a_z_j, d_pot_i, d_pot_j, *gcount_i, *gcount_padded_i, *gcount_j, *gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, d_multi_i, d_multi_j, epsilon, *allow_multipole_j, *allow_multipole_i);
+	pair_grav_pp<<<gpu_info->sms_multiple * gpu_info->nr_sm, 256, 0, stream>>>(periodic, d_CoM_i, d_CoM_j, rmax_i, rmax_j, min_trunc, d_active_i, d_mpole_i, d_active_j, d_mpole_j, dim[0], dim[1], dim[2], d_h_i, d_h_j, d_mass_i, d_mass_j, *r_s_inv, d_x_i, d_x_j, d_y_i, d_y_j, d_z_i, d_z_j, d_a_x_i, d_a_y_i, d_a_z_i, d_a_x_j, d_a_y_j, d_a_z_j, d_pot_i, d_pot_j, *gcount_i, *gcount_padded_i, *gcount_j, *gcount_padded_j, ci_active, cj_active, symmetric, allow_mpole, d_multi_i, d_multi_j, epsilon, *allow_multipole_j, *allow_multipole_i);
 
         //cudaDeviceSynchronize();
 

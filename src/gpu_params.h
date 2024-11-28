@@ -35,6 +35,9 @@ struct gpu_info {
 
   /*!< The number of CUDA streams. */
   int nr_streams;
+
+  /*! The multiple of nr_cms for the number of blocks. */
+  int sms_multiple;
 };
 
 struct gpu_info *gpu_init_info(struct swift_params *params);
