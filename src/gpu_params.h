@@ -38,6 +38,9 @@ struct gpu_info {
 
   /*! The multiple of nr_cms for the number of blocks. */
   int sms_multiple;
+
+  /*! The number of threads per block. */
+  int threads_per_block;
 };
 
 struct gpu_info *gpu_init_info(struct swift_params *params);

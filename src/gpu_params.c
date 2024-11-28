@@ -27,6 +27,10 @@ struct gpu_info *gpu_init_info(struct swift_params *params) {
   gpu_info->sms_multiple =
       parser_get_opt_param_int(params, "GPU:sms_multiple", 4);
 
+  /* Get the number of threads per block */
+  gpu_info->threads_per_block =
+      parser_get_opt_param_int(params, "GPU:threads_per_block", 256);
+
   /* Report what we've found */
   message("GPU device ID: %d", gpu_info->device_id);
   message("Number of SMs: %d", gpu_info->nr_sm);
@@ -49,6 +53,7 @@ struct gpu_info *gpu_init_info(struct swift_params *params) {
           gpu_info->max_threads_per_block_dimension_z);
   message("Number of CUDA streams: %d", gpu_info->nr_streams);
   message("SMs multiple: %d", gpu_info->sms_multiple);
+  message("Threads per block: %d", gpu_info->threads_per_block);
 
   return gpu_info;
 }

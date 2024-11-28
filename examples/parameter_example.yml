@@ -1029,4 +1029,5 @@ Lightcone1:
 
 GPU:
   nstreams: 8
-  sms_multiple: 4
+  sms_multiple: 2
+  threads_per_block: 256
