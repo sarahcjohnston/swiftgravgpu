@@ -37,6 +37,6 @@ struct gpu_info {
   int nr_streams;
 };
 
-sturct gpu_info *gpu_init_info(struct swift_params *params);
+struct gpu_info *gpu_init_info(struct swift_params *params);
 
 #endif  // GPU_PARAMS_H
