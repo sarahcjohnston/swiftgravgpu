@@ -8,7 +8,7 @@ struct gpu_info {
   int device_id;
 
   /*!< The number of streaming multiprocessors on the GPU. */
-  int num_sm;
+  int nr_sm;
 
   int max_threads_per_sm;       /*!< The maximum number of threads per SM. */
   int max_threads_per_block;    /*!< The maximum number of threads per block. */
@@ -31,7 +31,7 @@ struct gpu_info {
                                             block dimension z. */
 
   /*!< The number of CUDA streams. */
-  int nr_cuda_streams;
+  int nr_streams;
 };
 
 void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params);

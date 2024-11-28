@@ -22,7 +22,7 @@ void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
   cudaGetDeviceProperties(&deviceProp, gpu_info->device_id);
 
   /* Set the number of streaming multiprocessors */
-  gpu_info->num_sm = deviceProp.multiProcessorCount;
+  gpu_info->nr_sm = deviceProp.multiProcessorCount;
 
   /* Set the maximum number of threads per SM */
   gpu_info->max_threads_per_sm = deviceProp.maxThreadsPerMultiProcessor;
@@ -61,8 +61,7 @@ void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
   gpu_info->max_threads_per_block_dimension_z = deviceProp.maxThreadsDim[2];
 
   /* Get the number of CUDA streams from the parameters */
-  gpu_info->nr_cuda_streams = parser_get_opt_param_int(
-      params, "GPU:nstreams", space_max_top_level_cells_default);
+  gpu_info->nr_streams = parser_get_opt_param_int(params, "GPU:nstreams", 8);
 
   /* Report what we've found */
   message("GPU device ID: %d", gpu_info->device_id);
@@ -84,4 +83,5 @@ void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
           gpu_info->max_threads_per_block_dimension_y);
   message("Max threads per block dimension z: %d",
           gpu_info->max_threads_per_block_dimension_z);
+  message("Number of CUDA streams: %d", gpu_info->nr_streams);
 }
