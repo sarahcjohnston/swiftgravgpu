@@ -36,6 +36,7 @@
 #include "barrier.h"
 #include "clocks.h"
 #include "collectgroup.h"
+#include "gpu_params.h"
 #include "ic_info.h"
 #include "lightcone/lightcone.h"
 #include "lightcone/lightcone_array.h"
@@ -679,6 +680,9 @@ struct engine {
   /* Flag to tell brute force checks a snapshot was recently written. */
   int force_checks_snapshot_flag;
 #endif
+
+  /* GPU information. */
+  struct gpu_info *gpu_info;
 };
 
 /* Function prototypes, engine.c. */
