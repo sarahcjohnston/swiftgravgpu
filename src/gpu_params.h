@@ -3,6 +3,9 @@
 
 #include <cuda_runtime.h>
 
+/* Local includes */
+#include "parser.h"
+
 struct gpu_info {
   /*!< The device ID of the GPU. */
   int device_id;
