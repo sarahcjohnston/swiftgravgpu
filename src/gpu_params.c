@@ -1,8 +1,9 @@
-
-/* Local includes */
+/* This include */
 #include "gpu_params.h"
 
+/* Local includes */
 #include "cuda_streams.h"
+#include "error.h"
 
 /* Cuda inlcudes */
 #include <cuda.h>
