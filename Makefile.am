@@ -83,16 +83,16 @@ endif
 
 #  CUDA sources.
 cuda.o: grav_pp_offload.cu
-	nvcc -dc grav_pp_offload.cu -o cuda.o -gencode arch=native,code=native -I./src -I. -fmad=false
+	nvcc -dc grav_pp_offload.cu -o cuda.o -arch=native -I./src -I. -fmad=false
 
 link.o: cuda.o
-	nvcc cuda.o -gencode arch=native,code=native -arch=native -o link.o -lcudadevrt -lcudart -dlink
+	nvcc cuda.o -gencode -arch=native -o link.o -lcudadevrt -lcudart -dlink
 
 gpu_params.o: gpu_params.cu
-	nvcc -dc gpu_params.cu -o gpu_params.o -gencode arch=native,code=native -I./src -I. -fmad=false
+	nvcc -dc gpu_params.cu -o gpu_params.o -arch=native -I./src -I. -fmad=false
 
 link_params.o: gpu_params.o
-	nvcc gpu_params.o -gencode arch=native,code=native -arch=native -o link_params.o -lcudadevrt -lcudart -dlink
+	nvcc gpu_params.o -arch=native -o link_params.o -lcudadevrt -lcudart -dlink
 
 CUDALDFLAGS = -L/usr/local/cuda/lib64
 CUDALIBS=-lcudadevrt -lcudart -lcuda -lstdc++
