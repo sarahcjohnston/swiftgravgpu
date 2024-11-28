@@ -14,6 +14,57 @@
 #include "src/cuda_streams.h"
 #include "src/gpu_params.h"
 
+extern void gpu_device_props(struct gpu_info *gpu_info) {
+
+  /* Set the device ID */
+  cudaGetDevice(&gpu_info->device_id);
+
+  /* Get the device properties */
+  cudaDeviceProp deviceProp;
+  cudaGetDeviceProperties(&deviceProp, gpu_info->device_id);
+
+  /* Set the number of streaming multiprocessors */
+  gpu_info->nr_sm = deviceProp.multiProcessorCount;
+
+  /* Set the maximum number of threads per SM */
+  gpu_info->max_threads_per_sm = deviceProp.maxThreadsPerMultiProcessor;
+
+  /* Set the maximum number of threads per block */
+  gpu_info->max_threads_per_block = deviceProp.maxThreadsPerBlock;
+
+  /* Set the maximum number of blocks per SM */
+  gpu_info->max_blocks_per_sm = deviceProp.maxBlocksPerMultiProcessor;
+
+  /* Set the maximum amount of shared memory per SM */
+  gpu_info->max_shared_memory_per_sm = deviceProp.sharedMemPerMultiprocessor;
+
+  /* Set the maximum amount of shared memory per block */
+  gpu_info->max_shared_memory_per_block = deviceProp.sharedMemPerBlock;
+
+  /* Set the maximum number of registers per block */
+  gpu_info->max_registers_per_block = deviceProp.regsPerBlock;
+
+  /* Set the warp size */
+  gpu_info->warp_size = deviceProp.warpSize;
+
+  /* Set the maximum number of threads per block dimension */
+  gpu_info->max_threads_per_block_dimension = deviceProp.maxThreadsDim[0];
+
+  /* Set the maximum grid size */
+  gpu_info->max_grid_size = deviceProp.maxGridSize[0];
+
+  /* Set the maximum number of threads per block dimension x */
+  gpu_info->max_threads_per_block_dimension_x = deviceProp.maxThreadsDim[0];
+
+  /* Set the maximum number of threads per block dimension y */
+  gpu_info->max_threads_per_block_dimension_y = deviceProp.maxThreadsDim[1];
+
+  /* Set the maximum number of threads per block dimension z */
+  gpu_info->max_threads_per_block_dimension_z = deviceProp.maxThreadsDim[2];
+}
+
+
+
 
 //PP ALL INTERACTIONS
 __global__ void pair_grav_pp(int periodic, const float *CoM_i, const float *CoM_j, float rmax_i, float rmax_j, double min_trunc, int *active_i, int *mpole_i, int *active_j, int *mpole_j, float dim_0, float dim_1, float dim_2, float *h_i, float *h_j, float *mass_i_arr, float *mass_j_arr, const float r_s_inv, const float *x_i, const float *x_j, const float *y_i, const float *y_j, const float *z_i, const float *z_j, float *a_x_i, float *a_y_i, float *a_z_i, float *a_x_j, float *a_y_j, float *a_z_j, float *pot_i, float *pot_j, int gcount_i, int gcount_padded_i, int gcount_j, int gcount_padded_j, int ci_active, int cj_active, const int symmetric, const int allow_mpole, const struct multipole *restrict multi_i, const struct multipole *restrict multi_j, float *epsilon, const int allow_multipole_j, const int allow_multipole_i) {
