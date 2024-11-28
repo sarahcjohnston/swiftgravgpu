@@ -71,6 +71,7 @@
 #include "feedback.h"
 #include "fof.h"
 #include "forcing.h"
+#include "gpu_params.h"
 #include "gravity.h"
 #include "gravity_cache.h"
 #include "hydro.h"
@@ -3537,7 +3538,8 @@ void engine_init(
 #endif
 
   /* In GPU land, we need to create our cuda streams. */
-  engine_cuda_init_streams(/*TODO: don't hardcode this. num_streams*/ 8);
+  gpu_init_info(e->gpu_info, params);
+  engine_cuda_init_streams(e->gpu_info->nr_streams);
 }
 
 /**
