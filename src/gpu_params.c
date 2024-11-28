@@ -11,8 +11,7 @@
 void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
 
   /* Allocate memory for the gpu properties. */
-  struct gpu_info *gpu_info =
-      (struct gpu_info *)malloc(sizeof(struct gpu_info));
+  gpu_info = (struct gpu_info *)malloc(sizeof(struct gpu_info));
 
   /* Get all the device properties */
   gpu_device_props(gpu_info);
@@ -22,7 +21,7 @@ void gpu_init_info(struct gpu_info *gpu_info, struct swift_params *params) {
 
   /* Report what we've found */
   message("GPU device ID: %d", gpu_info->device_id);
-  message("Number of SMs: %d", gpu_info->num_sm);
+  message("Number of SMs: %d", gpu_info->nr_sm);
   message("Max threads per SM: %d", gpu_info->max_threads_per_sm);
   message("Max threads per block: %d", gpu_info->max_threads_per_block);
   message("Max blocks per SM: %d", gpu_info->max_blocks_per_sm);
