@@ -88,6 +88,12 @@ cuda.o: grav_pp_offload.cu
 link.o: cuda.o
 	nvcc cuda.o -gencode arch=native,code=native -arch=native -o link.o -lcudadevrt -lcudart -dlink
 
+gpu_params.o: gpu_params.cu
+	nvcc -dc gpu_params.cu -o gpu_params.o -gencode arch=native,code=native -I./src -I. -fmad=false
+
+link_params.o: gpu_params.o
+	nvcc gpu_params.o -gencode arch=native,code=native -arch=native -o link_params.o -lcudadevrt -lcudart -dlink
+
 CUDALDFLAGS = -L/usr/local/cuda/lib64
 CUDALIBS=-lcudadevrt -lcudart -lcuda -lstdc++
 
@@ -95,7 +101,7 @@ CUDALIBS=-lcudadevrt -lcudart -lcuda -lstdc++
 swift_SOURCES = swift.c
 swift_CFLAGS = $(MYFLAGS) $(AM_CFLAGS) -DENGINE_POLICY="engine_policy_keep $(ENGINE_POLICY_SETAFFINITY)"
 swift_LDFLAGS = $(CUDALDFLAGS)
-swift_LDADD = cuda.o link.o src/libswiftsim.la argparse/libargparse.la $(VELOCIRAPTOR_LIBS) $(EXTRA_LIBS) $(LD_CSDS) $(CUDALIBS)
+swift_LDADD = cuda.o link.o gpu_params.o link_params.o src/libswiftsim.la argparse/libargparse.la $(VELOCIRAPTOR_LIBS) $(EXTRA_LIBS) $(LD_CSDS) $(CUDALIBS)
 
 # Sources for swift_mpi, do we need an affinity policy for MPI?
 swift_mpi_SOURCES = swift.c
