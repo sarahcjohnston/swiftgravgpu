@@ -107,7 +107,7 @@ swift_LDADD = cuda.o link.o gpu_params.o link_params.o src/libswiftsim.la argpar
 swift_mpi_SOURCES = swift.c
 swift_mpi_CFLAGS = $(MYFLAGS) $(AM_CFLAGS) $(MPI_FLAGS) -DENGINE_POLICY="engine_policy_keep $(ENGINE_POLICY_SETAFFINITY)"
 swift_mpi_LDFLAGS = $(CUDALDFLAGS)
-swift_mpi_LDADD =  cuda.o link.o src/libswiftsim_mpi.la argparse/libargparse.la $(MPI_LIBS) $(VELOCIRAPTOR_MPI_LIBS) $(EXTRA_LIBS) $(LD_CSDS) $(CUDALIBS)
+swift_mpi_LDADD =  cuda.o link.o gpu_params.o link_params.o src/libswiftsim_mpi.la argparse/libargparse.la $(MPI_LIBS) $(VELOCIRAPTOR_MPI_LIBS) $(EXTRA_LIBS) $(LD_CSDS) $(CUDALIBS)
 
 # Sources for fof
 fof_SOURCES = swift_fof.c
