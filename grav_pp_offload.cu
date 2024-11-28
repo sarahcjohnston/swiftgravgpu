@@ -14,7 +14,7 @@
 #include "src/cuda_streams.h"
 #include "src/gpu_params.h"
 
-extern void gpu_device_props(struct gpu_info *gpu_info) {
+extern "C" void gpu_device_props(struct gpu_info *gpu_info) {
 
   /* Set the device ID */
   cudaGetDevice(&gpu_info->device_id);
