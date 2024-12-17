@@ -497,7 +497,7 @@ __device__ float grav_pot_eval(const float u) {
   return W;
 }
 
-__device__ float long_grav_eval(const float r_over_r_s, float *corr_f, float *corr_pot){
+__device__ void long_grav_eval(const float r_over_r_s, float *corr_f, float *corr_pot){
 #ifdef GADGET2_LONG_RANGE_CORRECTION
 
   const float two_over_sqrt_pi = ((float)M_2_SQRTPI);
